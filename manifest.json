@@ -1,0 +1,15 @@
+{
+  "name": "長瀬 → 大阪上本町（上り）",
+  "short_name": "電車時刻",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#66FF66",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
