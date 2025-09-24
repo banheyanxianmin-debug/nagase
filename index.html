@@ -19,24 +19,6 @@
       padding: 0;
     }
 
-    /* --- 遅延バナー用スタイル --- */
-    #delayBanner {
-      display: none; /* JSで表示/非表示を切替 */
-      text-align: center;
-      padding: 8px 10px;
-      font-weight: bold;
-      color: #fff;
-      background: #b30000; /* 赤系：遅延あり */
-      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-      position: sticky;
-      top: 0;
-      z-index: 999;
-    }
-    #delayBanner.ok {
-      background: #225522; /* 平常時（緑系） */
-      color: #dfffe0;
-    }
-
     .board {
       width: 95%;
       max-width: 1000px;
@@ -108,9 +90,6 @@
   </style>
 </head>
 <body>
-  <!-- ここが遅延表示エリア -->
-  <div id="delayBanner" aria-live="polite"></div>
-
   <div class="board">
     <div class="title">長瀬 → 大阪上本町（上り）</div>
 
@@ -132,7 +111,6 @@
   </div>
 
   <script>
-    /* ---------- 時刻表示ロジック ---------- */
     const weekdayTimes = [
       "05:17","05:34","05:50","06:08","06:24","06:33","06:46","06:59",
       "07:15","07:32","07:46","07:55","08:10","08:21","08:35","08:48",
@@ -205,41 +183,6 @@
       document.getElementById("currentTime").textContent=`現在時刻：${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
     }
     setInterval(updateBoard,1000);updateBoard();
-  </script>
-
-  <!-- 遅延取得用スクリプト -->
-  <script>
-    // VercelにデプロイしたAPIのURL
-    const API_URL = "https://nagase-lbfame0m1-banheyanxianmin-debugs-projects.vercel.app/";
-
-    async function updateDelayBanner() {
-      const banner = document.getElementById("delayBanner");
-      try {
-        const res = await fetch(API_URL, { cache: "no-store" });
-        if (!res.ok) throw new Error("API returned " + res.status);
-        const data = await res.json();
-
-        if (data && data.delay) {
-          // 遅延あり
-          banner.textContent = `🚨 近鉄大阪線：遅延情報あり（${(data.foundKeywords||[]).join(", ") || "詳細あり"}）`;
-          banner.style.display = "block";
-          banner.classList.remove("ok");
-        } else {
-          // 平常運行
-          banner.textContent = "✅ 近鉄大阪線：平常運行";
-          banner.style.display = "block";
-          banner.classList.add("ok");
-        }
-      } catch (e) {
-        console.error("delay API error:", e);
-        banner.textContent = "遅延情報を取得できません（ネットワーク/APIエラー）";
-        banner.style.display = "block";
-        banner.classList.remove("ok");
-      }
-    }
-
-    updateDelayBanner();
-    setInterval(updateDelayBanner, 60 * 1000);
   </script>
 </body>
 </html>
