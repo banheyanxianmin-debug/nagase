@@ -110,6 +110,15 @@
       text-shadow: 0 0 5px yellow;
       display: none;
     }
+
+    /* 運行情報ボタン */
+    .delay button {
+      font-size: 1.5em;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -132,25 +141,21 @@
     <div class="small" id="dayLabel">平日ダイヤ／休日ダイヤ</div>
     <div class="small">※祝日は正しく機能しない場合があります。</div>
 
-<!-- 遅延情報 -->
-<div class="delay" id="delayInfo">
-  ⚠ 遅延情報あり ⚠
-  <br><br>
-  <a href="https://www.kintetsu.jp/unkou/unkou.html" target="_blank">
-    <button style="font-size:1.5em; padding:10px 20px; border-radius:8px; cursor:pointer;">
-      近鉄運行情報を見る
-    </button>
-  </a>
-</div>
-
+    <!-- 遅延情報 -->
+    <div class="delay" id="delayInfo">
+      ⚠ 遅延情報あり ⚠
+      <br>
+      <a href="https://www.kintetsu.jp/unkou/unkou.html" target="_blank">
+        <button>近鉄運行情報を見る</button>
+      </a>
+    </div>
+  </div>
 
   <!-- Firebase SDK -->
   <script type="module">
-    // Firebase SDK を読み込み
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    // Firebase 設定（あなたのプロジェクトのものを使う）
     const firebaseConfig = {
       apiKey: "AIzaSyBpUIiiPjq9hjWqVNWQTJ0oDCrIosMbjuA",
       authDomain: "nagasebehind.firebaseapp.com",
@@ -162,7 +167,6 @@
       measurementId: "G-1LLXG548YS"
     };
 
-    // Firebase 初期化
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
@@ -171,16 +175,12 @@
     onValue(delayRef, (snapshot) => {
       const isDelayed = snapshot.val();
       const delayDiv = document.getElementById("delayInfo");
-      if (isDelayed) {
-        delayDiv.style.display = "block";
-      } else {
-        delayDiv.style.display = "none";
-      }
+      delayDiv.style.display = isDelayed ? "block" : "none";
     });
   </script>
 
   <script>
-    /* ==== 以下は既存の時刻表処理 ==== */
+    /* ==== 既存の時刻表処理 ==== */
     const weekdayTimes = [
       "05:17","05:34","05:50","06:08","06:24","06:33","06:46","06:59",
       "07:15","07:32","07:46","07:55","08:10","08:21","08:35","08:48",
