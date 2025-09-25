@@ -100,6 +100,16 @@
     .destination {
       color: white;
     }
+
+    /* 遅延情報表示 */
+    .delay {
+      text-align: center;
+      font-size: 2em;
+      color: red;
+      margin-top: 20px;
+      text-shadow: 0 0 5px yellow;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -121,9 +131,48 @@
     <div class="current" id="currentTime">現在時刻：--:--:--</div>
     <div class="small" id="dayLabel">平日ダイヤ／休日ダイヤ</div>
     <div class="small">※祝日は正しく機能しない場合があります。</div>
+
+    <!-- 遅延情報 -->
+    <div class="delay" id="delayInfo">⚠ 遅延情報あり ⚠</div>
   </div>
 
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Firebase SDK を読み込み
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    // Firebase 設定（あなたのプロジェクトのものを使う）
+    const firebaseConfig = {
+      apiKey: "AIzaSyBpUIiiPjq9hjWqVNWQTJ0oDCrIosMbjuA",
+      authDomain: "nagasebehind.firebaseapp.com",
+      databaseURL: "https://nagasebehind-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "nagasebehind",
+      storageBucket: "nagasebehind.firebasestorage.app",
+      messagingSenderId: "69948886999",
+      appId: "1:69948886999:web:b253232d70296d5d820592",
+      measurementId: "G-1LLXG548YS"
+    };
+
+    // Firebase 初期化
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // 遅延情報のリアルタイム監視
+    const delayRef = ref(db, "delay");
+    onValue(delayRef, (snapshot) => {
+      const isDelayed = snapshot.val();
+      const delayDiv = document.getElementById("delayInfo");
+      if (isDelayed) {
+        delayDiv.style.display = "block";
+      } else {
+        delayDiv.style.display = "none";
+      }
+    });
+  </script>
+
   <script>
+    /* ==== 以下は既存の時刻表処理 ==== */
     const weekdayTimes = [
       "05:17","05:34","05:50","06:08","06:24","06:33","06:46","06:59",
       "07:15","07:32","07:46","07:55","08:10","08:21","08:35","08:48",
@@ -199,4 +248,3 @@
   </script>
 </body>
 </html>
-
