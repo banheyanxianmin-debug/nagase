@@ -87,6 +87,19 @@
       font-size: 0.6em;
       margin-left: 8px;
     }
+
+    /* 「普通」を青背景＋白文字にする */
+    .train-type {
+      background-color: blue;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* 「大阪上本町」を白文字にする */
+    .destination {
+      color: white;
+    }
   </style>
 </head>
 <body>
@@ -94,13 +107,13 @@
     <div class="title">長瀬 → 大阪上本町（上り）</div>
 
     <div class="line" id="nextLine">
-      <div class="label">先発　普通　大阪上本町</div>
+      <div class="label">先発　<span class="train-type">普通</span>　<span class="destination">大阪上本町</span></div>
       <div class="time" id="nextTrainTime">--:--</div>
       <div class="countdown" id="countdown">あと -- 分 -- 秒</div>
     </div>
 
     <div class="line" id="secondLine">
-      <div class="label">次発　普通　大阪上本町</div>
+      <div class="label">次発　<span class="train-type">普通</span>　<span class="destination">大阪上本町</span></div>
       <div class="time" id="secondTrainTime">--:--</div>
       <div class="countdown" id="secondCountdown">あと -- 分 -- 秒</div>
     </div>
@@ -186,3 +199,4 @@
   </script>
 </body>
 </html>
+
