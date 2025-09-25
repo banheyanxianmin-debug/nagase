@@ -4,6 +4,69 @@
   <meta charset="UTF-8">
   <title>管理者用 遅延切替</title>
   <style>
-    body { background-color:#000; color:#FFF; font-family:"メイリオ", monospace; text-align:center; padding:50px; }
-    button { font-size:2em; margin:20px; padding:15px 30px; border-radius:10px; }
-    .on { background-color:red;
+    body { 
+      background-color: #000; 
+      color: #FFF; 
+      font-family: "メイリオ", monospace; 
+      text-align: center; 
+      padding: 50px; 
+    }
+    h1 { font-size: 2.5em; margin-bottom: 50px; color: #66FF66; }
+    button { 
+      font-size: 2em; 
+      margin: 20px; 
+      padding: 15px 30px; 
+      border-radius: 10px; 
+      cursor: pointer; 
+    }
+    .on { background-color: red; color: white; }
+    .off { background-color: green; color: white; }
+    .status { font-size: 1.8em; margin-top: 30px; }
+  </style>
+</head>
+<body>
+  <h1>管理者用：遅延情報切替</h1>
+  <button id="delayOn" class="on">遅延ありにする</button>
+  <button id="delayOff" class="off">遅延なしにする</button>
+  <div class="status" id="status">現在の状態：読み込み中...</div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBpUIiiPjq9hjWqVNWQTJ0oDCrIosMbjuA",
+      authDomain: "nagasebehind.firebaseapp.com",
+      databaseURL: "https://nagasebehind-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "nagasebehind",
+      storageBucket: "nagasebehind.firebasestorage.app",
+      messagingSenderId: "69948886999",
+      appId: "1:69948886999:web:b253232d70296d5d820592",
+      measurementId: "G-1LLXG548YS"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const delayRef = ref(db, "delay");
+    const statusDiv = document.getElementById("status");
+
+    // 現在の状態を監視
+    onValue(delayRef, (snapshot) => {
+      const isDelayed = snapshot.val();
+      statusDiv.textContent = `現在の状態：${isDelayed ? "遅延あり" : "遅延なし"}`;
+    });
+
+    // 遅延ありボタン
+    document.getElementById("delayOn").addEventListener("click", () => {
+      set(delayRef, true);
+    });
+
+    // 遅延なしボタン
+    document.getElementById("delayOff").addEventListener("click", () => {
+      set(delayRef, false);
+    });
+  </script>
+</body>
+</html>
