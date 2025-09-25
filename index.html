@@ -111,11 +111,14 @@
       display: none;
     }
 
-    /* 運行情報ボタン */
+    /* ボタンスタイル */
     .delay button {
-      font-size: 1.5em;
-      padding: 10px 20px;
-      border-radius: 8px;
+      background-color: red;
+      color: white;
+      font-size: 1.2em;
+      padding: 6px 16px;
+      border-radius: 6px;
+      border: none;
       cursor: pointer;
       margin-top: 10px;
     }
@@ -175,12 +178,16 @@
     onValue(delayRef, (snapshot) => {
       const isDelayed = snapshot.val();
       const delayDiv = document.getElementById("delayInfo");
-      delayDiv.style.display = isDelayed ? "block" : "none";
+      if (isDelayed) {
+        delayDiv.style.display = "block";
+      } else {
+        delayDiv.style.display = "none";
+      }
     });
   </script>
 
   <script>
-    /* ==== 既存の時刻表処理 ==== */
+    /* ==== 以下は既存の時刻表処理 ==== */
     const weekdayTimes = [
       "05:17","05:34","05:50","06:08","06:24","06:33","06:46","06:59",
       "07:15","07:32","07:46","07:55","08:10","08:21","08:35","08:48",
