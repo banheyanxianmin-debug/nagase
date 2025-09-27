@@ -2,9 +2,8 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>長瀬 → 大阪上本町（上り）</title>
+  <title>長瀬・八戸ノ里 → 大阪上本町（上り）</title>
 
-  <!-- サイトアイコン設定 -->
   <link rel="icon" type="image/png" sizes="32x32" href="icon-512.png">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-512.png">
   <link rel="apple-touch-icon" sizes="180x180" href="icon-512.png">
@@ -18,105 +17,87 @@
       margin: 0;
       padding: 0;
     }
-
     .board {
       width: 95%;
       max-width: 1000px;
-      margin: 40px auto;
-      padding: 30px;
+      margin: 24px auto;
+      padding: 24px;
       border: 4px solid #444;
       box-shadow: 0 0 20px rgba(0,255,0,0.7);
       background-color: #000;
     }
-
-    .title {
-      font-size: 3em;
+    .section-title {
+      font-size: 2.2em;
       color: #66FF66;
       text-align: center;
-      margin-bottom: 30px;
+      margin: 20px 0 12px;
       text-shadow: 0 0 8px #66FF66;
     }
-
     .line {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 2.2em;
-      padding: 15px 0;
+      font-size: 2.0em;
+      padding: 12px 0;
       border-top: 1px solid #444;
       white-space: nowrap;
     }
-
     .label {
       flex: 2;
       text-align: left;
       color: #88FF88;
-      min-width: 300px;
+      min-width: 260px;
     }
-
     .time {
       flex: 1.2;
       text-align: center;
       color: #FFFF66;
-      position: relative;
     }
-
     .countdown {
       flex: 1.5;
       text-align: right;
       color: #FFAA00;
     }
-
     .small {
-      font-size: 1.5em;
+      font-size: 1.2em;
       color: #AAAAAA;
       text-align: center;
-      margin-top: 20px;
+      margin-top: 6px;
     }
-
     .current {
-      font-size: 2.5em;
+      font-size: 3.6em;
       font-weight: bold;
-      margin-top: 40px;
+      margin: 12px 0 4px;
       text-align: center;
       color: #66CCFF;
     }
-
     .last {
       color: red;
       font-size: 0.6em;
       margin-left: 8px;
     }
-
-    /* 「普通」を青背景＋白文字にする */
     .train-type {
       background-color: blue;
       color: white;
       padding: 2px 8px;
       border-radius: 4px;
     }
-
-    /* 「大阪上本町」を白文字にする */
     .destination {
       color: white;
     }
-
-    /* 遅延情報表示 */
     .delay {
       text-align: center;
-      font-size: 2em;
+      font-size: 1.6em;
       color: red;
-      margin-top: 20px;
+      margin-top: 16px;
       text-shadow: 0 0 5px yellow;
       display: none;
     }
-
-    /* ボタンスタイル */
     .delay button {
       background-color: red;
       color: white;
-      font-size: 1.2em;
-      padding: 6px 16px;
+      font-size: 1em;
+      padding: 6px 14px;
       border-radius: 6px;
       border: none;
       cursor: pointer;
@@ -126,23 +107,35 @@
 </head>
 <body>
   <div class="board">
-    <div class="title">長瀬 → 大阪上本町（上り）</div>
-
-    <div class="line" id="nextLine">
-      <div class="label">先発　<span class="train-type">普通</span>　<span class="destination">大阪上本町</span></div>
-      <div class="time" id="nextTrainTime">--:--</div>
-      <div class="countdown" id="countdown">あと -- 分 -- 秒</div>
-    </div>
-
-    <div class="line" id="secondLine">
-      <div class="label">次発　<span class="train-type">普通</span>　<span class="destination">大阪上本町</span></div>
-      <div class="time" id="secondTrainTime">--:--</div>
-      <div class="countdown" id="secondCountdown">あと -- 分 -- 秒</div>
-    </div>
-
     <div class="current" id="currentTime">現在時刻：--:--:--</div>
     <div class="small" id="dayLabel">平日ダイヤ／休日ダイヤ</div>
     <div class="small">※祝日は正しく機能しない場合があります。</div>
+
+    <!-- 長瀬駅 -->
+    <div class="section-title">長瀬 → 大阪上本町（上り）</div>
+    <div class="line">
+      <div class="label">先発　<span class="train-type">普通</span>　<span class="destination">大阪上本町</span></div>
+      <div class="time" id="nagaseNextTime">--:--</div>
+      <div class="countdown" id="nagaseNextCountdown">あと -- 分 -- 秒</div>
+    </div>
+    <div class="line">
+      <div class="label">次発　<span class="train-type">普通</span>　<span class="destination">大阪上本町</span></div>
+      <div class="time" id="nagaseSecondTime">--:--</div>
+      <div class="countdown" id="nagaseSecondCountdown">あと -- 分 -- 秒</div>
+    </div>
+
+    <!-- 八戸ノ里駅 -->
+    <div class="section-title">八戸ノ里 → 大阪難波（上り）</div>
+    <div class="line">
+      <div class="label">先発　<span class="train-type">普通</span>　<span class="destination" id="hachinoNextDest">--</span></div>
+      <div class="time" id="hachinoNextTime">--:--</div>
+      <div class="countdown" id="hachinoNextCountdown">あと -- 分 -- 秒</div>
+    </div>
+    <div class="line">
+      <div class="label">次発　<span class="train-type">普通</span>　<span class="destination" id="hachinoSecondDest">--</span></div>
+      <div class="time" id="hachinoSecondTime">--:--</div>
+      <div class="countdown" id="hachinoSecondCountdown">あと -- 分 -- 秒</div>
+    </div>
 
     <!-- 遅延情報 -->
     <div class="delay" id="delayInfo">
@@ -154,7 +147,7 @@
     </div>
   </div>
 
-  <!-- Firebase SDK -->
+  <!-- Firebase 遅延情報 -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -170,25 +163,21 @@
       measurementId: "G-1LLXG548YS"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    // 遅延情報のリアルタイム監視
-    const delayRef = ref(db, "delay");
-    onValue(delayRef, (snapshot) => {
-      const isDelayed = snapshot.val();
-      const delayDiv = document.getElementById("delayInfo");
-      if (isDelayed) {
-        delayDiv.style.display = "block";
-      } else {
-        delayDiv.style.display = "none";
-      }
-    });
+    try {
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const delayRef = ref(db, "delay");
+      onValue(delayRef, (snapshot) => {
+        const isDelayed = snapshot.val();
+        document.getElementById("delayInfo").style.display = isDelayed ? "block" : "none";
+      });
+    } catch (e) {
+      console.warn("Firebase init failed:", e);
+    }
   </script>
 
   <script>
-    /* ==== 以下は既存の時刻表処理 ==== */
-    const weekdayTimes = [
+    const weekdayTimesNagase = [
       "05:17","05:34","05:50","06:08","06:24","06:33","06:46","06:59",
       "07:15","07:32","07:46","07:55","08:10","08:21","08:35","08:48",
       "09:01","09:11","09:21","09:29","09:37","09:50","10:01","10:15",
@@ -201,8 +190,7 @@
       "20:03","20:17","20:30","20:42","20:59","21:08","21:19","21:29","21:42",
       "21:50","22:05","22:16","22:33","22:47","23:02","23:10","23:26","23:39","23:50"
     ];
-
-    const holidayTimes = [
+    const holidayTimesNagase = [
       "05:17","05:34","05:52","06:08","06:27","06:44","06:57",
       "07:13","07:30","07:39","07:52","08:07","08:15","08:28","08:37",
       "08:49","09:04","09:16","09:27","09:38","09:50","10:07","10:17",
@@ -216,50 +204,303 @@
       "21:59","22:17","22:29","22:43","23:04","23:18","23:32","23:39","23:50"
     ];
 
-    function pad(n){return n.toString().padStart(2,'0');}
-    function timeStringToDate(str,base){
-      const[h,m]=str.split(":").map(Number);
-      return new Date(base.getFullYear(),base.getMonth(),base.getDate(),h,m);
+    const weekdayHachino = [
+      { time:"05:07", dest:"　尼崎　" },
+      { time:"05:21", dest:"大阪難波" },
+      { time:"05:33", dest:"大阪難波" },
+      { time:"05:49", dest:"大阪難波" },
+      { time:"06:00", dest:"大阪難波" },
+      { time:"06:12", dest:"大阪難波" },
+      { time:"06:24", dest:"大阪難波" },
+      { time:"06:37", dest:"大阪難波" },
+      { time:"06:48", dest:"　尼崎　" },
+      { time:"06:59", dest:"　尼崎　" },
+      { time:"07:06", dest:"　尼崎　" },
+      { time:"07:17", dest:"　尼崎　" },
+      { time:"07:30", dest:"　尼崎　" },
+      { time:"07:40", dest:"　尼崎　" },
+      { time:"07:50", dest:"　尼崎　" },
+      { time:"08:02", dest:"　尼崎　" },
+      { time:"08:10", dest:"大阪難波" },
+      { time:"08:18", dest:"　尼崎　" },
+      { time:"08:30", dest:"　尼崎　" },
+      { time:"08:41", dest:"　尼崎　" },
+      { time:"08:53", dest:"　尼崎　" },
+      { time:"09:04", dest:"大阪難波" },
+      { time:"09:18", dest:"　尼崎　" },
+      { time:"09:26", dest:"　尼崎　" },
+      { time:"09:41", dest:"　尼崎　" },
+      { time:"09:54", dest:"　尼崎　" },
+      { time:"10:02", dest:"大阪難波" },
+      { time:"10:13", dest:"大阪難波" },
+      { time:"10:20", dest:"大阪難波" },
+      { time:"10:33", dest:"　尼崎　" },
+      { time:"10:40", dest:"大阪難波" },
+      { time:"10:53", dest:"　尼崎　" },
+      { time:"11:00", dest:"大阪難波" },
+      { time:"11:13", dest:"　尼崎　" },
+      { time:"11:20", dest:"大阪難波" },
+      { time:"11:33", dest:"　尼崎　" },
+      { time:"11:40", dest:"大阪難波" },
+      { time:"11:53", dest:"　尼崎　" },
+      { time:"12:00", dest:"大阪難波" },
+      { time:"12:13", dest:"　尼崎　" },
+      { time:"12:20", dest:"大阪難波" },
+      { time:"12:33", dest:"　尼崎　" },
+      { time:"12:40", dest:"大阪難波" },
+      { time:"12:53", dest:"　尼崎　" },
+      { time:"13:00", dest:"大阪難波" },
+      { time:"13:13", dest:"　尼崎　" },
+      { time:"13:20", dest:"大阪難波" },
+      { time:"13:33", dest:"　尼崎　" },
+      { time:"13:40", dest:"大阪難波" },
+      { time:"13:53", dest:"　尼崎　" },
+      { time:"14:00", dest:"大阪難波" },
+      { time:"14:13", dest:"　尼崎　" },
+      { time:"14:20", dest:"大阪難波" },
+      { time:"14:33", dest:"　尼崎　" },
+      { time:"14:40", dest:"大阪難波" },
+      { time:"14:53", dest:"　尼崎　" },
+      { time:"15:00", dest:"大阪難波" },
+      { time:"15:13", dest:"　尼崎　" },
+      { time:"15:20", dest:"　尼崎　" },
+      { time:"15:33", dest:"　尼崎　" },
+      { time:"15:40", dest:"　尼崎　" },
+      { time:"15:53", dest:"　尼崎　" },
+      { time:"16:00", dest:"　尼崎　" },
+      { time:"16:13", dest:"　尼崎　" },
+      { time:"16:20", dest:"　尼崎　" },
+      { time:"16:31", dest:"　尼崎　" },
+      { time:"16:40", dest:"　尼崎　" },
+      { time:"16:53", dest:"　尼崎　" },
+      { time:"17:03", dest:"　尼崎　" },
+      { time:"17:12", dest:"　尼崎　" },
+      { time:"17:21", dest:"　尼崎　" },
+      { time:"17:32", dest:"　尼崎　" },
+      { time:"17:42", dest:"　尼崎　" },
+      { time:"17:52", dest:"　尼崎　" },
+      { time:"18:01", dest:"　尼崎　" },
+      { time:"18:12", dest:"　尼崎　" },
+      { time:"18:22", dest:"　尼崎　" },
+      { time:"18:32", dest:"　尼崎　" },
+      { time:"18:42", dest:"　尼崎　" },
+      { time:"18:52", dest:"　尼崎　" },
+      { time:"19:02", dest:"　尼崎　" },
+      { time:"19:12", dest:"　尼崎　" },
+      { time:"19:22", dest:"　尼崎　" },
+      { time:"19:32", dest:"　尼崎　" },
+      { time:"19:42", dest:"　尼崎　" },
+      { time:"19:46", dest:"大阪難波" },
+      { time:"19:54", dest:"　尼崎　" },
+      { time:"20:05", dest:"　尼崎　" },
+      { time:"20:15", dest:"　尼崎　" },
+      { time:"20:28", dest:"　尼崎　" },
+      { time:"20:40", dest:"　尼崎　" },
+      { time:"20:53", dest:"　尼崎　" },
+      { time:"21:01", dest:"　尼崎　" },
+      { time:"21:12", dest:"　尼崎　" },
+      { time:"21:24", dest:"　尼崎　" },
+      { time:"21:36", dest:"　尼崎　" },
+      { time:"21:48", dest:"　尼崎　" },
+      { time:"21:59", dest:"大阪難波" },
+      { time:"22:14", dest:"　尼崎　" },
+      { time:"22:28", dest:"　尼崎　" },
+      { time:"22:36", dest:"大阪難波" },
+      { time:"22:48", dest:"大阪難波" },
+      { time:"22:58", dest:"　尼崎　" },
+      { time:"23:12", dest:"　尼崎　" },
+      { time:"23:27", dest:"　尼崎　" },
+      { time:"23:37", dest:"　尼崎　" },
+      { time:"23:49", dest:"大阪難波" },
+      // ... (省略せず追加してください)
+    ];
+    const holidayHachino = [
+{ time:"05:07", dest:"　尼崎　" },
+      { time:"05:21", dest:"大阪難波" },
+      { time:"05:33", dest:"大阪難波" },
+      { time:"05:51", dest:"大阪難波" },
+      { time:"06:08", dest:"大阪難波" },
+      { time:"06:20", dest:"大阪難波" },
+      { time:"06:34", dest:"大阪難波" },
+      { time:"06:46", dest:"大阪難波" },
+      { time:"07:00", dest:"大阪難波" },
+      { time:"07:13", dest:"大阪難波" },
+      { time:"07:29", dest:"大阪難波" },
+      { time:"07:40", dest:"大阪難波" },
+      { time:"07:50", dest:"大阪難波" },
+      { time:"08:00", dest:"大阪難波" },
+      { time:"08:09", dest:"大阪難波" },
+      { time:"08:21", dest:"大阪難波" },
+      { time:"08:30", dest:"大阪難波" },
+      { time:"08:41", dest:"大阪難波" },
+      { time:"08:53", dest:"　尼崎　" },
+      { time:"09:01", dest:"大阪難波" },
+      { time:"09:13", dest:"　尼崎　" },
+      { time:"09:20", dest:"大阪難波" },
+      { time:"09:32", dest:"　尼崎　" },
+      { time:"09:41", dest:"大阪難波" },
+      { time:"09:53", dest:"　尼崎　" },
+      { time:"10:00", dest:"大阪難波" },
+      { time:"10:13", dest:"　尼崎　" },
+      { time:"10:18", dest:"大阪難波" },
+      { time:"10:33", dest:"　尼崎　" },
+      { time:"10:40", dest:"大阪難波" },
+      { time:"10:53", dest:"　尼崎　" },
+      { time:"11:00", dest:"大阪難波" },
+      { time:"11:13", dest:"　尼崎　" },
+      { time:"11:18", dest:"大阪難波" },
+      { time:"11:33", dest:"　尼崎　" },
+      { time:"11:40", dest:"大阪難波" },
+      { time:"11:53", dest:"　尼崎　" },
+      { time:"12:00", dest:"大阪難波" },
+      { time:"12:13", dest:"　尼崎　" },
+      { time:"12:18", dest:"大阪難波" },
+      { time:"12:33", dest:"　尼崎　" },
+      { time:"12:40", dest:"大阪難波" },
+      { time:"12:53", dest:"　尼崎　" },
+      { time:"13:00", dest:"大阪難波" },
+      { time:"13:13", dest:"　尼崎　" },
+      { time:"13:18", dest:"大阪難波" },
+      { time:"13:33", dest:"　尼崎　" },
+      { time:"13:40", dest:"大阪難波" },
+      { time:"13:53", dest:"　尼崎　" },
+      { time:"14:00", dest:"大阪難波" },
+      { time:"14:13", dest:"　尼崎　" },
+      { time:"14:18", dest:"大阪難波" },
+      { time:"14:33", dest:"　尼崎　" },
+      { time:"14:40", dest:"大阪難波" },
+      { time:"14:53", dest:"　尼崎　" },
+      { time:"15:00", dest:"大阪難波" },
+      { time:"15:13", dest:"　尼崎　" },
+      { time:"15:18", dest:"大阪難波" },
+      { time:"15:33", dest:"　尼崎　" },
+      { time:"15:40", dest:"大阪難波" },
+      { time:"15:53", dest:"　尼崎　" },
+      { time:"16:00", dest:"大阪難波" },
+      { time:"16:13", dest:"　尼崎　" },
+      { time:"16:18", dest:"大阪難波" },
+      { time:"16:33", dest:"　尼崎　" },
+      { time:"16:40", dest:"大阪難波" },
+      { time:"16:53", dest:"　尼崎　" },
+      { time:"17:00", dest:"大阪難波" },
+      { time:"17:13", dest:"　尼崎　" },
+      { time:"17:18", dest:"大阪難波" },
+      { time:"17:33", dest:"　尼崎　" },
+      { time:"17:40", dest:"大阪難波" },
+      { time:"17:53", dest:"　尼崎　" },
+      { time:"18:00", dest:"大阪難波" },
+      { time:"18:13", dest:"　尼崎　" },
+      { time:"18:21", dest:"　尼崎　" },
+      { time:"18:33", dest:"　尼崎　" },
+      { time:"18:47", dest:"　尼崎　" },
+      { time:"18:57", dest:"　尼崎　" },
+      { time:"19:12", dest:"　尼崎　" },
+      { time:"19:24", dest:"　尼崎　" },
+      { time:"19:36", dest:"　尼崎　" },
+      { time:"19:49", dest:"　尼崎　" },
+      { time:"20:05", dest:"　尼崎　" },
+      { time:"20:17", dest:"　尼崎　" },
+      { time:"20:25", dest:"　尼崎　" },
+      { time:"20:36", dest:"　尼崎　" },
+      { time:"20:48", dest:"　尼崎　" },
+      { time:"20:59", dest:"　尼崎　" },
+      { time:"21:12", dest:"　尼崎　" },
+      { time:"21:28", dest:"大阪難波" },
+      { time:"21:42", dest:"大阪難波" },
+      { time:"21:57", dest:"　尼崎　" },
+      { time:"22:09", dest:"大阪難波" },
+      { time:"22:20", dest:"大阪難波" },
+      { time:"22:34", dest:"　尼崎　" },
+      { time:"22:47", dest:"　尼崎　" },
+      { time:"22:58", dest:"　尼崎　" },
+      { time:"23:12", dest:"　尼崎　" },
+      { time:"23:27", dest:"　尼崎　" },
+      { time:"23:38", dest:"　尼崎　" },
+      { time:"23:49", dest:"大阪難波" },
+      // ... (省略せず追加してください)
+    ];
+
+    function pad(n){ return n.toString().padStart(2, '0'); }
+    function timeStringToDate(str, base){
+      const [h,m]=str.split(":").map(Number);
+      return new Date(base.getFullYear(), base.getMonth(), base.getDate(), h, m, 0);
     }
-    function getUpcomingTimes(now,list){
-      let next=null,after=null;
+    function getUpcomingTimes(now, list){
       for(let i=0;i<list.length;i++){
-        const t=timeStringToDate(list[i],now);
-        if(t>now){next=t;if(i+1<list.length){after=timeStringToDate(list[i+1],now);}break;}
+        const t=timeStringToDate(list[i].time||list[i], now);
+        if(t>now){
+          const after=(i+1<list.length)?timeStringToDate(list[i+1].time||list[i+1], now):null;
+          return { next:t, nextIdx:i, after:after, afterIdx:(i+1<list.length?i+1:null) };
+        }
       }
-      if(!next)next=timeStringToDate(list[0],new Date(now.getFullYear(),now.getMonth(),now.getDate()+1));
-      return{next,after};
+      const tomorrow=new Date(now.getFullYear(), now.getMonth(), now.getDate()+1);
+      const next=timeStringToDate(list[0].time||list[0], tomorrow);
+      const after=(list.length>1)?timeStringToDate(list[1].time||list[1], tomorrow):null;
+      return { next:next, nextIdx:0, after:after, afterIdx:(list.length>1?1:null) };
     }
+
+    function updateStationSimple(now, times, ids){
+      const res=getUpcomingTimes(now, times);
+      const next=res.next, after=res.after, nextIdx=res.nextIdx, afterIdx=res.afterIdx;
+      const diffNext=Math.max(0, Math.floor((next-now)/1000));
+      const min1=Math.floor(diffNext/60), sec1=diffNext%60;
+      const isNextLast=(nextIdx===times.length-1)&&(next.getDate()===now.getDate());
+      document.getElementById(ids.nextTime).innerHTML=
+        `${pad(next.getHours())}:${pad(next.getMinutes())}${isNextLast?'<span class="last">（終電）</span>':""}`;
+      document.getElementById(ids.nextCountdown).textContent=`あと ${min1}分 ${sec1}秒`;
+      if(after){
+        const diffAfter=Math.max(0, Math.floor((after-now)/1000));
+        const min2=Math.floor(diffAfter/60), sec2=diffAfter%60;
+        const isAfterLast=(afterIdx===times.length-1)&&(after.getDate()===now.getDate());
+        document.getElementById(ids.secondTime).innerHTML=
+          `${pad(after.getHours())}:${pad(after.getMinutes())}${isAfterLast?'<span class="last">（終電）</span>':""}`;
+        document.getElementById(ids.secondCountdown).textContent=`あと ${min2}分 ${sec2}秒`;
+      }
+    }
+
+    function updateStationWithDest(now, list, ids){
+      const res=getUpcomingTimes(now, list);
+      const next=res.next, after=res.after, nextIdx=res.nextIdx, afterIdx=res.afterIdx;
+      const diffNext=Math.max(0, Math.floor((next-now)/1000));
+      const min1=Math.floor(diffNext/60), sec1=diffNext%60;
+      const isNextLast=(nextIdx===list.length-1)&&(next.getDate()===now.getDate());
+      document.getElementById(ids.nextDest).textContent=list[nextIdx].dest;
+      document.getElementById(ids.nextTime).innerHTML=
+        `${pad(next.getHours())}:${pad(next.getMinutes())}${isNextLast?'<span class="last">（終電）</span>':""}`;
+      document.getElementById(ids.nextCountdown).textContent=`あと ${min1}分 ${sec1}秒`;
+
+      if(after){
+        const diffAfter=Math.max(0, Math.floor((after-now)/1000));
+        const min2=Math.floor(diffAfter/60), sec2=diffAfter%60;
+        const isAfterLast=(afterIdx===list.length-1)&&(after.getDate()===now.getDate());
+        document.getElementById(ids.secondDest).textContent=list[afterIdx].dest;
+        document.getElementById(ids.secondTime).innerHTML=
+          `${pad(after.getHours())}:${pad(after.getMinutes())}${isAfterLast?'<span class="last">（終電）</span>':""}`;
+        document.getElementById(ids.secondCountdown).textContent=`あと ${min2}分 ${sec2}秒`;
+      }
+    }
+
     function updateBoard(){
       const now=new Date();
-      const day=now.getDay();
-      const useHoliday=(day===0||day===6);
+      const useHoliday=(now.getDay()===0||now.getDay()===6);
       document.getElementById("dayLabel").textContent=useHoliday?"休日ダイヤを使用中（土・日）":"平日ダイヤを使用中";
-      const times=useHoliday?holidayTimes:weekdayTimes;
-      const{next,after}=getUpcomingTimes(now,times);
-      const diffNext=next-now;
-      const min1=Math.floor(diffNext/60000);
-      const sec1=Math.floor((diffNext%60000)/1000);
-      const lastTime=timeStringToDate(times[times.length-1],now).getTime();
-      const isNextLast=next.getTime()===lastTime;
-      const isAfterLast=after&&after.getTime()===lastTime;
-      document.getElementById("nextTrainTime").innerHTML=
-        `${pad(next.getHours())}:${pad(next.getMinutes())}${isNextLast?'<span class="last">（終電）</span>':""}`;
-      document.getElementById("countdown").textContent=`あと ${min1}分 ${sec1}秒`;
-      if(after&&!isNextLast){
-        const diffAfter=after-now;
-        const min2=Math.floor(diffAfter/60000);
-        const sec2=Math.floor((diffAfter%60000)/1000);
-        document.getElementById("secondTrainTime").innerHTML=
-          `${pad(after.getHours())}:${pad(after.getMinutes())}${isAfterLast?'<span class="last">（終電）</span>':""}`;
-        document.getElementById("secondCountdown").textContent=`あと ${min2}分 ${sec2}秒`;
-      }else{
-        document.getElementById("secondTrainTime").textContent="";
-        document.getElementById("secondCountdown").textContent="";
-      }
-      document.getElementById("currentTime").textContent=`現在時刻：${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+      updateStationSimple(now, useHoliday?holidayTimesNagase:weekdayTimesNagase, {
+        nextTime:"nagaseNextTime", nextCountdown:"nagaseNextCountdown",
+        secondTime:"nagaseSecondTime", secondCountdown:"nagaseSecondCountdown"
+      });
+      updateStationWithDest(now, useHoliday?holidayHachino:weekdayHachino, {
+        nextDest:"hachinoNextDest", nextTime:"hachinoNextTime", nextCountdown:"hachinoNextCountdown",
+        secondDest:"hachinoSecondDest", secondTime:"hachinoSecondTime", secondCountdown:"hachinoSecondCountdown"
+      });
+      document.getElementById("currentTime").textContent=
+        `現在時刻：${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
     }
-    setInterval(updateBoard,1000);updateBoard();
+
+    document.addEventListener("DOMContentLoaded", ()=>{
+      updateBoard();
+      setInterval(updateBoard,1000);
+    });
   </script>
 </body>
 </html>
