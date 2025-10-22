@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>長瀬・八戸ノ里 発車時刻（ハロウィン）</title>
+  <title>長瀬・八戸ノ里 発車時刻（ハロウィン・拡大文字版）</title>
 
   <link rel="icon" type="image/png" sizes="32x32" href="icon-512.png">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-512.png">
@@ -73,8 +73,9 @@
       pointer-events: none;
     }
 
+    /* 全体的に文字を大きくする（見やすさ向上） */
     .section-title {
-      font-size: 2.4rem;
+      font-size: 3.0rem; /* 少し大きめに */
       color: var(--accent-orange);
       text-align: center;
       margin: 34px 0 18px;
@@ -85,18 +86,19 @@
       letter-spacing: 0.06em;
     }
 
+    /* 行の基準フォントサイズを上げる（全体的に大きく見えるように） */
     .line {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 1.6rem;
-      padding: 14px 6px;
+      font-size: 2.4rem; /* 元の1.6remから大きく（全体的な拡大） */
+      padding: 16px 8px;
       border-top: 1px dashed rgba(255,140,0,0.06);
       white-space: nowrap;
       transition: background 0.18s, transform 0.12s;
       background: linear-gradient(90deg, rgba(155,48,255,0.006), transparent);
       border-radius: 8px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     .line:hover {
       transform: translateY(-2px);
@@ -114,66 +116,76 @@
       font-weight: 700;
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:12px;
+      font-size: inherit; /* ラベルは line のサイズに合わせる */
     }
 
     /* 「普通」ラベルは色や背景を変更しない（ユーザー要望） */
     .train-type { 
       background-color: blue; /* 変更しない */
       color: white;            /* 変更しない */
-      padding: 4px 10px;
+      padding: 6px 12px;
       border-radius: 6px;
-      font-size: 0.82em;
+      font-size: 0.9em;
     }
     .destination {
       color: white; /* 変更しない */
-      margin-left: 10px;
-      font-weight: 700;
+      margin-left: 12px;
+      font-weight: 800;
       letter-spacing: 0.02em;
+      /* 指定どおり、行先を今の2倍に */
+      font-size: 3.2rem; /* 現在の1.6remから2倍 */
+      line-height: 1;
     }
 
+    /* 時刻を2倍に（現在1.75rem→3.5rem） */
     .time {
       flex: 1.2;
       text-align: center;
       color: var(--accent-orange);
-      font-weight: 800;
-      font-size: 1.75rem;
+      font-weight: 900;
+      font-size: 3.5rem; /* 2倍 */
       text-shadow: 0 0 10px rgba(255,140,0,0.12);
+      line-height: 1;
     }
     .time.last-train {
       color: #FF4444 !important;
       text-shadow: 0 0 16px rgba(255,68,68,0.18);
+      font-weight: 900;
     }
 
+    /* カウントダウンを2倍に（現在1.1rem→2.2rem） */
     .countdown {
       flex: 1.5;
       text-align: right;
       color: var(--accent-purple);
-      font-weight: 800;
-      font-size: 1.1rem;
+      font-weight: 900;
+      font-size: 2.2rem; /* 2倍 */
       text-shadow: 0 0 8px rgba(155,48,255,0.09);
+      line-height: 1;
     }
 
     .small {
-      font-size: 1.05rem;
+      font-size: 1.6rem; /* 少し大きめに */
       color: #d8cfe6;
       text-align: center;
-      margin-top: 8px;
+      margin-top: 10px;
     }
 
     .current {
-      font-size: 3.6rem;
+      font-size: 5.6rem; /* 現在時刻をより大きく */
       font-weight: 900;
-      margin: 18px 0 8px;
+      margin: 18px 0 10px;
       text-align: center;
       color: var(--accent-purple);
       text-shadow: 0 0 12px rgba(155,48,255,0.18), 0 4px 18px rgba(0,0,0,0.6);
       letter-spacing: 0.06em;
+      line-height: 1;
     }
 
     .delay {
       text-align: center;
-      font-size: 1.6rem;
+      font-size: 2.0rem;
       color: #ff6666;
       margin-top: 30px;
       text-shadow: 0 0 8px rgba(255,200,0,0.12);
@@ -182,8 +194,8 @@
     .delay button {
       background-color: #ff4444;
       color: white;
-      font-size: 0.9rem;
-      padding: 8px 18px;
+      font-size: 1.0rem;
+      padding: 10px 20px;
       border-radius: 8px;
       border: none;
       cursor: pointer;
@@ -208,8 +220,8 @@
       color: #fff;
       border: 2px solid rgba(255,140,0,0.18);
       border-radius: 10px;
-      font-size: 1.05rem;
-      padding: 10px 20px;
+      font-size: 1.1rem;
+      padding: 12px 22px;
       cursor: pointer;
       transition: transform 0.12s, box-shadow 0.12s;
       font-family: inherit;
@@ -227,8 +239,8 @@
       max-width: 900px;
       margin: 0 auto 40px auto;
       border-radius: 12px;
-      padding: 20px 26px;
-      font-size: 1rem;
+      padding: 24px 30px;
+      font-size: 1.15rem;
       box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       display: none;
       border: 1px solid rgba(155,48,255,0.05);
@@ -237,15 +249,26 @@
       display: block;
     }
 
-    /* レスポンシブ調整 */
+    /* モバイル用に調整（倍率を保ちながら横切れ回避） */
+    @media (max-width: 900px) {
+      .section-title { font-size: 2.4rem; }
+      .line { font-size: 1.8rem; }
+      .destination { font-size: 2.6rem; }
+      .time { font-size: 2.8rem; }
+      .countdown { font-size: 1.8rem; }
+      .current { font-size: 4.2rem; }
+      .small { font-size: 1.2rem; }
+    }
     @media (max-width:640px){
-      .current{ font-size:2.4rem; }
-      .time{ font-size:1.4rem; }
-      .countdown{ font-size:0.95rem; }
-      .section-title{ font-size:1.6rem; }
-      .label{ min-width: 160px; font-size:0.95rem; }
-      .menu-tabs{ gap:10px; padding:0 8px; }
-      .menu-tabs button{ padding:8px 12px; font-size:0.95rem;}
+      .section-title { font-size: 1.8rem; }
+      .line { font-size: 1.2rem; }
+      .label { min-width: 120px; }
+      .destination { font-size: 1.8rem; }
+      .time { font-size: 1.8rem; }
+      .countdown { font-size: 1.0rem; }
+      .current{ font-size: 2.8rem; }
+      .small{ font-size: 1.0rem; }
+      .menu-tabs button{ padding:8px 12px; font-size:0.95rem; }
     }
   </style>
 </head>
@@ -882,7 +905,6 @@
       if(!str) return null;
       const [h,m]=str.split(":").map(Number);
       let d = new Date(base.getFullYear(), base.getMonth(), base.getDate(), h, m, 0);
-      // 0時台の時刻が現在の時刻より前の場合、日付を翌日にする処理 (始発対応)
       if (h < 5 && d < base) {
           d.setDate(d.getDate() + 1);
       }
@@ -891,49 +913,32 @@
 
     function getUpcomingTimes(now, list){
       let upcoming = [];
-      
-      // 当日分の時刻をチェック
       for(let i=0;i<list.length;i++){
         let t = timeStringToDate(list[i].time || list[i], now);
-        
-        // 0時台の処理 (翌日扱い)
         if (t.getHours() < 5 && now.getHours() >= 5 && t < now) {
              t.setDate(t.getDate() + 1);
         } else if (t.getHours() >= 5 && t < now) {
-            // 過ぎた時刻はスキップ
             continue;
         } else if (t.getHours() < 5 && now.getHours() < 5 && t < now) {
-             // 0時台で、現在時刻も0-4時台なら、過ぎた時刻は翌日
              t.setDate(t.getDate() + 1);
         }
-
-
         if (t > now) {
             upcoming.push({ time: t, idx: i, data: list[i] });
         }
       }
-      
-      // 翌日分の始発をチェック（当日分の時刻リストの最初から）
-      // 既に十分な列車があればスキップ
       if (upcoming.length < 2) {
           const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
           for (let i = 0; i < list.length && upcoming.length < 2; i++) {
               let t = timeStringToDate(list[i].time || list[i], tomorrow);
-              
-              // 5時より前の時刻（0時台など）は、次の日の時刻として扱う
               if(t.getHours() < 5 || t.getHours() >= 23){
                   t = timeStringToDate(list[i].time || list[i], tomorrow);
               }
-              
-              // 現在時刻が当日の夜遅く（例：23時台）で、翌日始発が必要な場合を考慮
               if(t > now && !upcoming.some(u => u.time.getTime() === t.getTime())) {
                 upcoming.push({ time: t, idx: i, data: list[i] });
               }
           }
       }
-
-      upcoming.sort((a, b) => a.time - b.time); // 時刻でソート
-
+      upcoming.sort((a, b) => a.time - b.time);
       return { 
         next: upcoming[0] ? upcoming[0].time : null, 
         nextData: upcoming[0] ? upcoming[0].data : null,
@@ -971,13 +976,11 @@
       if (isAfterLast) {
         const firstTrain = timeStringToDate(list[firstIdx].time || list[firstIdx], new Date(now.getFullYear(), now.getMonth(), now.getDate() + (now.getHours()>=5?1:0)));
         const secondTrain = timeStringToDate(list[secondIdx].time || list[secondIdx], new Date(now.getFullYear(), now.getMonth(), now.getDate() + (now.getHours()>=5?1:0)));
-        // 上段
         lineTop.classList.remove("hidden");
         nextTimeElem.textContent = `${pad(firstTrain.getHours())}:${pad(firstTrain.getMinutes())}`;
         nextLabelElem.textContent = (list[firstIdx].dest || "大阪上本町").trim();
         nextTimeElem.classList.remove("last-train");
         updateCountdown(nextCountdownElem, firstTrain);
-        // 下段
         if (secondTrain) {
           lineBottom.classList.remove("hidden");
           secondTimeElem.textContent = `${pad(secondTrain.getHours())}:${pad(secondTrain.getMinutes())}`;
@@ -989,7 +992,7 @@
         }
         return;
       }
-      // 通常
+
       if(info.next){
         lineTop.classList.remove("hidden");
         nextTimeElem.textContent=`${pad(info.next.getHours())}:${pad(info.next.getMinutes())}`;
@@ -1033,7 +1036,8 @@
       document.getElementById("currentTime").textContent=`現在時刻：${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
       const isHoliday=(now.getDay()===0 || now.getDay()===6);
       document.getElementById("dayLabel").textContent = isHoliday ? "休日ダイヤ" : "平日ダイヤ";
-      updateSection("nagase", isHoliday?holidayTimesNagase.map(t => ({time:t, dest:"大阪上本町"})):weekdayTimesNagase.map(t => ({time:t, dest:"大阪上本町"})), now);
+      // ここで時刻表データ（省略部分）を渡す
+      updateSection("nagase", isHoliday?holidayTimesNagase:weekdayTimesNagase, now);
       updateSection("hachino", isHoliday?holidayHachino:weekdayHachino, now);
       updateSection("hachinoDown", isHoliday?holidayHachinoDown:weekdayHachinoDown, now);
     }
