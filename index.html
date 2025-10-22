@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>長瀬・八戸ノ里 発車時刻</title>
+  <title>長瀬・八戸ノ里 発車時刻（ハロウィン）</title>
 
   <link rel="icon" type="image/png" sizes="32x32" href="icon-512.png">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-512.png">
@@ -10,153 +10,242 @@
   <link rel="manifest" href="manifest.json">
 
   <style>
+    /* カラー変数（ハロウィン） */
+    :root{
+      --bg-dark:#0b0210;           /* 深い紫/黒 */
+      --bg-mid:#19041a;            /* 中間の紫 */
+      --accent-orange:#FF8C00;     /* ハロウィンのオレンジ */
+      --accent-purple:#9B30FF;     /* 紫アクセント */
+      --accent-green:#66FF66;      /* 既存の緑（必要箇所保持） */
+      --muted:#bdb0c9;             /* 補助的な薄い色 */
+      --panel:#120612;             /* パネル色 */
+      --glow: 0 0 18px rgba(255,140,0,0.12);
+    }
+
+    /* 全体 */
     body {
-      background-color: #000;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(155,48,255,0.06), transparent 10%),
+        radial-gradient(900px 500px at 90% 80%, rgba(255,140,0,0.04), transparent 10%),
+        linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-mid) 100%);
       color: #FFF;
-      font-family: "メイリオ", "Meiryo", monospace;
+      font-family: "メイリオ", "Meiryo", "Segoe UI", -apple-system, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
       margin: 0;
       padding: 0;
-      font-size: 18px; 
+      font-size: 18px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
+
+    /* メインボード */
     .board {
       width: 95%;
       max-width: 1200px;
-      margin: 30px auto;
-      padding: 30px;
-      border: 6px solid #444;
-      box-shadow: 0 0 25px rgba(0,255,0,0.8);
-      background-color: #000;
+      margin: 28px auto;
+      padding: 34px;
+      border-radius: 16px;
+      border: 4px solid rgba(255,140,0,0.12);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6), var(--glow);
+      background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(24,6,24,0.6));
+      position: relative;
+      overflow: hidden;
     }
+
+    /* ぼんやりしたかぼちゃの模様（装飾） */
+    .board::before{
+      content: "🎃";
+      position: absolute;
+      right: -30px;
+      top: -20px;
+      font-size: 220px;
+      opacity: 0.06;
+      transform: rotate(-18deg);
+      pointer-events: none;
+    }
+    .board::after{
+      content: "🦇";
+      position: absolute;
+      left: -20px;
+      bottom: -40px;
+      font-size: 180px;
+      opacity: 0.03;
+      transform: rotate(10deg);
+      pointer-events: none;
+    }
+
     .section-title {
-      font-size: 2.8em;
-      color: #66FF66;
+      font-size: 2.4rem;
+      color: var(--accent-orange);
       text-align: center;
-      margin: 40px 0 20px;
-      padding: 10px 0;
-      border-bottom: 2px solid #222;
-      text-shadow: 0 0 10px #66FF66;
+      margin: 34px 0 18px;
+      padding: 8px 0;
+      border-bottom: 2px solid rgba(155,48,255,0.08);
+      text-shadow: 0 0 12px rgba(255,140,0,0.18), 0 0 30px rgba(155,48,255,0.03);
+      font-weight: 700;
+      letter-spacing: 0.06em;
     }
+
     .line {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 2.4em;
-      padding: 16px 0;
-      border-top: 1px dashed #444;
+      font-size: 1.6rem;
+      padding: 14px 6px;
+      border-top: 1px dashed rgba(255,140,0,0.06);
       white-space: nowrap;
+      transition: background 0.18s, transform 0.12s;
+      background: linear-gradient(90deg, rgba(155,48,255,0.006), transparent);
+      border-radius: 8px;
+      margin-bottom: 6px;
+    }
+    .line:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(90deg, rgba(155,48,255,0.03), rgba(255,140,0,0.01));
     }
     .line:last-of-type {
-      border-bottom: 1px solid #444; 
+      border-bottom: none;
     }
+
     .label {
       flex: 2;
       text-align: left;
-      color: #88FF88;
+      color: var(--muted);
       min-width: 300px;
-      font-weight: bold;
+      font-weight: 700;
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
+
+    /* 「普通」ラベルは色や背景を変更しない（ユーザー要望） */
+    .train-type { 
+      background-color: blue; /* 変更しない */
+      color: white;            /* 変更しない */
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.82em;
+    }
+    .destination {
+      color: white; /* 変更しない */
+      margin-left: 10px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
     .time {
       flex: 1.2;
       text-align: center;
-      color: #FFFF66;
-      font-weight: bold;
-      transition: color 0.3s;
+      color: var(--accent-orange);
+      font-weight: 800;
+      font-size: 1.75rem;
+      text-shadow: 0 0 10px rgba(255,140,0,0.12);
     }
     .time.last-train {
       color: #FF4444 !important;
-      text-shadow: 0 0 12px #FF8888;
-      font-weight: bold;
+      text-shadow: 0 0 16px rgba(255,68,68,0.18);
     }
+
     .countdown {
       flex: 1.5;
       text-align: right;
-      color: #FFAA00;
-      font-weight: bold;
+      color: var(--accent-purple);
+      font-weight: 800;
+      font-size: 1.1rem;
+      text-shadow: 0 0 8px rgba(155,48,255,0.09);
     }
+
     .small {
-      font-size: 1.4em;
-      color: #AAAAAA;
+      font-size: 1.05rem;
+      color: #d8cfe6;
       text-align: center;
       margin-top: 8px;
     }
+
     .current {
-      font-size: 4.8em;
-      font-weight: bold;
-      margin: 20px 0 6px;
+      font-size: 3.6rem;
+      font-weight: 900;
+      margin: 18px 0 8px;
       text-align: center;
-      color: #66CCFF;
-      text-shadow: 0 0 10px rgba(102, 204, 255, 0.5);
+      color: var(--accent-purple);
+      text-shadow: 0 0 12px rgba(155,48,255,0.18), 0 4px 18px rgba(0,0,0,0.6);
+      letter-spacing: 0.06em;
     }
-    .train-type {
-      background-color: blue;
-      color: white;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.8em;
-    }
-    .destination {
-      color: white;
-      margin-left: 10px;
-    }
+
     .delay {
       text-align: center;
-      font-size: 2.0em;
-      color: red;
+      font-size: 1.6rem;
+      color: #ff6666;
       margin-top: 30px;
-      text-shadow: 0 0 8px yellow;
+      text-shadow: 0 0 8px rgba(255,200,0,0.12);
       display: none;
     }
     .delay button {
-      background-color: red;
+      background-color: #ff4444;
       color: white;
-      font-size: 0.8em;
+      font-size: 0.9rem;
       padding: 8px 18px;
       border-radius: 8px;
       border: none;
       cursor: pointer;
       margin-top: 15px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
     }
+
     .hidden {
       display: none !important;
     }
-    /* --- メニュータブ用スタイル（ボタン式） --- */
+
+    /* メニュータブ（ボタン式） */
     .menu-tabs {
       display: flex;
       justify-content: center;
-      margin: 40px 0 0 0;
-      gap: 30px;
+      margin: 34px 0 8px 0;
+      gap: 18px;
+      flex-wrap:wrap;
     }
     .menu-tabs button {
-      background: #111;
+      background: linear-gradient(180deg,#0f0611,#241225);
       color: #fff;
-      border: 2px solid #66FF66;
-      border-radius: 8px;
-      font-size: 1.4em;
-      padding: 10px 32px;
+      border: 2px solid rgba(255,140,0,0.18);
+      border-radius: 10px;
+      font-size: 1.05rem;
+      padding: 10px 20px;
       cursor: pointer;
-      transition: background 0.2s, color 0.2s;
+      transition: transform 0.12s, box-shadow 0.12s;
       font-family: inherit;
-      margin-bottom: 10px;
       outline: none;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.6);
     }
+    .menu-tabs button:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 36px rgba(0,0,0,0.7), 0 0 18px rgba(155,48,255,0.04);
+    }
+
     .tab-content {
-      background: #222;
+      background: linear-gradient(180deg, rgba(255,140,0,0.03), rgba(0,0,0,0.25));
       color: #fff;
       max-width: 900px;
-      margin: 0 auto 30px auto;
-      border-radius: 0 0 18px 18px;
-      padding: 32px 40px;
-      font-size: 1.1em;
-      box-shadow: 0 8px 32px rgba(0,255,0,0.12);
+      margin: 0 auto 40px auto;
+      border-radius: 12px;
+      padding: 20px 26px;
+      font-size: 1rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       display: none;
-      animation: fadeIn 0.3s;
+      border: 1px solid rgba(155,48,255,0.05);
     }
     .tab-content.active {
       display: block;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(30px);}
-      to { opacity: 1; transform: translateY(0);}
+
+    /* レスポンシブ調整 */
+    @media (max-width:640px){
+      .current{ font-size:2.4rem; }
+      .time{ font-size:1.4rem; }
+      .countdown{ font-size:0.95rem; }
+      .section-title{ font-size:1.6rem; }
+      .label{ min-width: 160px; font-size:0.95rem; }
+      .menu-tabs{ gap:10px; padding:0 8px; }
+      .menu-tabs button{ padding:8px 12px; font-size:0.95rem;}
     }
   </style>
 </head>
@@ -217,8 +306,9 @@
     <button type="button" onclick="toggleTab('privacy')">プライバシーポリシーを表示</button>
     <button type="button" onclick="window.open('https://www.instagram.com/mahi_ro0511', '_blank')">お問い合わせ</button>
   </div>
+
   <div id="tab-terms" class="tab-content">
-    <!-- 利用規約の内容は変更しない -->
+    <!-- 利用規約の内容はそのまま -->
     <h2>利用規約</h2>
     <p>
       本利用規約（以下「本規約」といいます）は、当サイト（以下「当サイト」といいます）の利用条件を定めるものです。当サイトをご利用いただく際には、本規約に同意いただいたものとみなします。<br>
@@ -257,8 +347,9 @@
       本規約は日本法に準拠し、当サイトに関連して生じる紛争については、大阪地方裁判所を第一審の専属的合意管轄裁判所とします。<br>
     </p>
   </div>
+
   <div id="tab-privacy" class="tab-content">
-    <!-- プライバシーポリシーの内容は変更しない -->
+    <!-- プライバシーポリシーの内容はそのまま -->
     <h2>プライバシーポリシー</h2>
     <p>
      プライバシーポリシー
@@ -303,7 +394,7 @@
   </div>
 
   <script>
-    // タブ切り替え用（ボタン式）
+    // タブ切り替え用（ボタン式：開閉トグル）
     function toggleTab(tab) {
       var el_terms = document.getElementById('tab-terms');
       var el_privacy = document.getElementById('tab-privacy');
@@ -326,17 +417,15 @@
       }
     }
     // 初期状態は非表示
-    window.onload = function() {
+    window.addEventListener('load', function() {
       document.getElementById('tab-terms').style.display = "none";
       document.getElementById('tab-privacy').style.display = "none";
       document.getElementById('tab-terms').classList.remove("active");
       document.getElementById('tab-privacy').classList.remove("active");
-    };
+    });
   </script>
+
   <script>
-    // ==== ここから時刻表データ＆ロジック ====
-    // (時刻表・ロジックはそのまま、ここに省略せず貼ってください)
-    // すでにあなたが貼っている内容です
     // ========== 時刻表データここから ==========
     // 長瀬 上り
     const weekdayTimesNagase = [ "05:17","05:34","05:50","06:08","06:24","06:33","06:46","06:59",
@@ -363,6 +452,7 @@
       "20:16","20:32","20:40","20:53","21:06","21:18","21:33","21:44",
       "21:59","22:17","22:29","22:43","23:04","23:18","23:32","23:39","23:50"
     ];
+
     // 八戸ノ里 上り
     const weekdayHachino = [ { time:"05:07", dest:"　尼崎　" },
       { time:"05:21", dest:"大阪難波" },
@@ -471,7 +561,7 @@
       { time:"23:27", dest:"　尼崎　" },
       { time:"23:37", dest:"　尼崎　" },
       { time:"23:49", dest:"大阪難波" }
- ];
+    ];
     const holidayHachino = [{ time:"05:07", dest:"　尼崎　" },
       { time:"05:21", dest:"大阪難波" },
       { time:"05:33", dest:"大阪難波" },
@@ -574,7 +664,7 @@
       { time:"23:27", dest:"　尼崎　" },
       { time:"23:38", dest:"　尼崎　" },
       { time:"23:49", dest:"大阪難波" },
-];
+    ];
     // 八戸ノ里 下り
     const weekdayHachinoDown = [ { "time":"05:29", "dest":"大和西大寺" },
       { "time":"05:29", "dest":"　東花園　" },
@@ -681,7 +771,7 @@
       { "time":"23:44", "dest":"大和西大寺" },
       { "time":"00:05", "dest":"　東花園　" },
       { "time":"00:21", "dest":"　東花園　" }
- ];
+    ];
     const holidayHachinoDown = [ { "time":"05:29", "dest":"大和西大寺" },
       { "time":"05:49", "dest":"   奈良   " },
       { "time":"06:04", "dest":"大和西大寺" },
@@ -783,57 +873,75 @@
       { "time":"23:44", "dest":"大和西大寺" },
       { "time":"00:05", "dest":"  東花園  " },
       { "time":"00:21", "dest":"  東花園  " }
- ];
-    // ==== ここまで時刻表データ ====
+    ];
+    // ========== 時刻表データここまで ==========
 
-    // --- 以下、ロジック ---
+    // --- 以下、ロジック（元のまま） ---
     function pad(n){ return n.toString().padStart(2,"0"); }
     function timeStringToDate(str, base){
       if(!str) return null;
       const [h,m]=str.split(":").map(Number);
       let d = new Date(base.getFullYear(), base.getMonth(), base.getDate(), h, m, 0);
+      // 0時台の時刻が現在の時刻より前の場合、日付を翌日にする処理 (始発対応)
       if (h < 5 && d < base) {
           d.setDate(d.getDate() + 1);
       }
       return d;
     }
+
     function getUpcomingTimes(now, list){
       let upcoming = [];
+      
+      // 当日分の時刻をチェック
       for(let i=0;i<list.length;i++){
         let t = timeStringToDate(list[i].time || list[i], now);
+        
+        // 0時台の処理 (翌日扱い)
         if (t.getHours() < 5 && now.getHours() >= 5 && t < now) {
              t.setDate(t.getDate() + 1);
         } else if (t.getHours() >= 5 && t < now) {
+            // 過ぎた時刻はスキップ
             continue;
         } else if (t.getHours() < 5 && now.getHours() < 5 && t < now) {
+             // 0時台で、現在時刻も0-4時台なら、過ぎた時刻は翌日
              t.setDate(t.getDate() + 1);
         }
+
+
         if (t > now) {
             upcoming.push({ time: t, idx: i, data: list[i] });
         }
       }
+      
+      // 翌日分の始発をチェック（当日分の時刻リストの最初から）
+      // 既に十分な列車があればスキップ
       if (upcoming.length < 2) {
           const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
           for (let i = 0; i < list.length && upcoming.length < 2; i++) {
               let t = timeStringToDate(list[i].time || list[i], tomorrow);
+              
+              // 5時より前の時刻（0時台など）は、次の日の時刻として扱う
               if(t.getHours() < 5 || t.getHours() >= 23){
                   t = timeStringToDate(list[i].time || list[i], tomorrow);
               }
+              
+              // 現在時刻が当日の夜遅く（例：23時台）で、翌日始発が必要な場合を考慮
               if(t > now && !upcoming.some(u => u.time.getTime() === t.getTime())) {
                 upcoming.push({ time: t, idx: i, data: list[i] });
               }
           }
       }
-      upcoming.sort((a, b) => a.time - b.time);
+
+      upcoming.sort((a, b) => a.time - b.time); // 時刻でソート
+
       return { 
         next: upcoming[0] ? upcoming[0].time : null, 
         nextData: upcoming[0] ? upcoming[0].data : null,
-        nextIdx: upcoming[0] ? upcoming[0].idx : -1,
         after: upcoming[1] ? upcoming[1].time : null,
-        afterData: upcoming[1] ? upcoming[1].data : null,
-        afterIdx: upcoming[1] ? upcoming[1].idx : -1
+        afterData: upcoming[1] ? upcoming[1].data : null
       };
     }
+
     function updateCountdown(elem,time){
       const now=new Date();
       if(!time){ elem.textContent="--"; return; }
