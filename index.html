@@ -125,6 +125,7 @@
       justify-content: center;
       margin: 40px 0 0 0;
       gap: 30px;
+      flex-wrap: wrap;
     }
     .menu-tabs button {
       background: #111;
@@ -138,6 +139,10 @@
       font-family: inherit;
       margin-bottom: 10px;
       outline: none;
+    }
+    .menu-tabs button:hover {
+      background: #66FF66;
+      color: #000;
     }
     /* 共有ボタン行（3つのボタンの下に表示する） */
     .share-row {
@@ -158,6 +163,10 @@
       margin-bottom: 10px;
       outline: none;
     }
+    .share-row button:hover {
+      background: #66FF66;
+      color: #000;
+    }
     .tab-content {
       background: #222;
       color: #fff;
@@ -177,9 +186,21 @@
       from { opacity: 0; transform: translateY(30px);}
       to { opacity: 1; transform: translateY(0);}
     }
+    
+    /* --- 桜エフェクト用スタイル --- */
+    #sakura {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 999;
+    }
   </style>
 </head>
 <body>
+  <!-- ★ Canvas要素（最初に配置） -->
+  <canvas id="sakura"></canvas>
+
   <div class="board">
     <div class="current" id="currentTime">現在時刻：--:--:--</div>
     <div class="small" id="dayLabel">平日ダイヤ／休日ダイヤ</div>
@@ -232,6 +253,7 @@
 
   <!-- メニュータブ（ボタン式） -->
   <div class="menu-tabs" id="menuTabs">
+    <button type="button" onclick="toggleSakura()">🌸 桜ON/OFF</button>
     <button type="button" onclick="toggleTab('terms')">利用規約を表示</button>
     <button type="button" onclick="toggleTab('privacy')">プライバシーポリシーを表示</button>
     <button type="button" onclick="window.open('https://www.instagram.com/mahi_ro0511', '_blank')">お問い合わせ</button>
@@ -243,7 +265,6 @@
   </div>
 
   <div id="tab-terms" class="tab-content">
-    <!-- 利用規約の内容は変更しない -->
     <h2>利用規約</h2>
     <p>
       本利用規約（以下「本規約」といいます）は、当サイト（以下「当サイト」といいます）の利用条件を定めるものです。当サイトをご利用いただく際には、本規約に同意いただいたものとみなします。<br>
@@ -283,7 +304,6 @@
     </p>
   </div>
   <div id="tab-privacy" class="tab-content">
-    <!-- プライバシーポリシーの内容は変更しない -->
     <h2>プライバシーポリシー</h2>
     <p>
      プライバシーポリシー
@@ -360,10 +380,7 @@
   </script>
   <script>
     // ==== ここから時刻表データ＆ロジック ====
-    // (時刻表・ロジックはそのまま、ここに省略せず貼ってください)
-    // すでにあなたが貼っている内容です
-    // ========== 時刻表データここから ==========
-        // 長瀬 上り
+    // 長瀬 上り
     const weekdayTimesNagase = [ "05:17","05:34","05:50","06:08","06:24","06:33","06:46","06:59",
       "07:15","07:32","07:46","07:55","08:10","08:21","08:35","08:48",
       "09:01","09:11","09:21","09:29","09:37","09:50","10:01","10:15",
@@ -388,7 +405,7 @@
       "20:16","20:32","20:40","20:53","21:06","21:18","21:33","21:44",
       "21:59","22:17","22:29","22:43","23:04","23:18","23:32","23:39","23:50"
     ];
-    // 八戸ノ里 上り
+    //   戸ノ里 上り
     const weekdayHachino = [ { time:"05:07", dest:"　尼崎　" },
       { time:"05:21", dest:"大阪難波" },
       { time:"05:33", dest:"大阪難波" },
@@ -608,97 +625,97 @@
       { "time":"06:34", "dest":"　東生駒　" },
       { "time":"06:50", "dest":"　 奈良 　" },
       { "time":"07:03", "dest":"大和西大寺" },
-      { "time":"07:11", "dest":"   奈良   " },
-      { "time":"07:25", "dest":"   奈良 　" },
+      { "time":"07:11", "dest":"   奈良   " },
+      { "time":"07:25", "dest":"   奈良 　" },
       { "time":"07:39", "dest":"大和西大寺" },
       { "time":"07:49", "dest":"大和西大寺" },
-      { "time":"07:52", "dest":"  東花園  " },
+      { "time":"07:52", "dest":"  東花園  " },
       { "time":"07:58", "dest":"大和西大寺" },
-      { "time":"08:06", "dest":"  東花園  " },
+      { "time":"08:06", "dest":"  東花園  " },
       { "time":"08:13", "dest":"大和西大寺" },
-      { "time":"08:19", "dest":"  東花園  " },
-      { "time":"08:25", "dest":"  東花園  " },
-      { "time":"08:36", "dest":"   奈良   " },
-      { "time":"08:49", "dest":"   奈良   " },
-      { "time":"08:59", "dest":"  東花園  " },
-      { "time":"09:13", "dest":"  東花園  " },
-      { "time":"09:20", "dest":"  東花園  " },
-      { "time":"09:26", "dest":"  東花園  " },
-      { "time":"09:38", "dest":"   奈良   " },
+      { "time":"08:19", "dest":"  東花園  " },
+      { "time":"08:25", "dest":"  東花園  " },
+      { "time":"08:36", "dest":"   奈良   " },
+      { "time":"08:49", "dest":"   奈良   " },
+      { "time":"08:59", "dest":"  東花園  " },
+      { "time":"09:13", "dest":"  東花園  " },
+      { "time":"09:20", "dest":"  東花園  " },
+      { "time":"09:26", "dest":"  東花園  " },
+      { "time":"09:38", "dest":"   奈良   " },
       { "time":"09:49", "dest":"大和西大寺" },
-      { "time":"10:01", "dest":"  東花園  " },
+      { "time":"10:01", "dest":"  東花園  " },
       { "time":"10:15", "dest":"大和西大寺" },
-      { "time":"10:21", "dest":"  東花園  " },
+      { "time":"10:21", "dest":"  東花園  " },
       { "time":"10:35", "dest":"大和西大寺" },
-      { "time":"10:41", "dest":"  東花園  " },
-      { "time":"10:55", "dest":"   奈良   " },
-      { "time":"11:01", "dest":"  東花園  " },
+      { "time":"10:41", "dest":"  東花園  " },
+      { "time":"10:55", "dest":"   奈良   " },
+      { "time":"11:01", "dest":"  東花園  " },
       { "time":"11:15", "dest":"大和西大寺" },
-      { "time":"11:21", "dest":"  東花園  " },
+      { "time":"11:21", "dest":"  東花園  " },
       { "time":"11:35", "dest":"大和西大寺" },
-      { "time":"11:41", "dest":"  東花園  " },
+      { "time":"11:41", "dest":"  東花園  " },
       { "time":"11:55", "dest":"大和西大寺" },
-      { "time":"12:01", "dest":"  東花園  " },
+      { "time":"12:01", "dest":"  東花園  " },
       { "time":"12:15", "dest":"大和西大寺" },
-      { "time":"12:21", "dest":"  東花園  " },
+      { "time":"12:21", "dest":"  東花園  " },
       { "time":"12:35", "dest":"大和西大寺" },
-      { "time":"12:41", "dest":"  東花園  " },
+      { "time":"12:41", "dest":"  東花園  " },
       { "time":"12:55", "dest":"大和西大寺" },
-      { "time":"13:01", "dest":"  東花園  " },
+      { "time":"13:01", "dest":"  東花園  " },
       { "time":"13:15", "dest":"大和西大寺" },
-      { "time":"13:21", "dest":"  東花園  " },
-      { "time":"13:35", "dest":"   奈良   " },
-      { "time":"13:41", "dest":"  東花園  " },
+      { "time":"13:21", "dest":"  東花園  " },
+      { "time":"13:35", "dest":"   奈良   " },
+      { "time":"13:41", "dest":"  東花園  " },
       { "time":"13:55", "dest":"大和西大寺" },
-      { "time":"14:01", "dest":"  東花園  " },
+      { "time":"14:01", "dest":"  東花園  " },
       { "time":"14:15", "dest":"大和西大寺" },
-      { "time":"14:21", "dest":"  東花園  " },
-      { "time":"14:35", "dest":"   奈良   " },
-      { "time":"14:41", "dest":"  東花園  " },
+      { "time":"14:21", "dest":"  東花園  " },
+      { "time":"14:35", "dest":"   奈良   " },
+      { "time":"14:41", "dest":"  東花園  " },
       { "time":"14:55", "dest":"大和西大寺" },
-      { "time":"15:01", "dest":"  東花園  " },
+      { "time":"15:01", "dest":"  東花園  " },
       { "time":"15:15", "dest":"大和西大寺" },
-      { "time":"15:21", "dest":"  東花園  " },
+      { "time":"15:21", "dest":"  東花園  " },
       { "time":"15:35", "dest":"大和西大寺" },
       { "time":"15:41", "dest":"　東花園　" },
       { "time":"15:55", "dest":"大和西大寺" },
-      { "time":"16:01", "dest":"  東花園  " },
-      { "time":"16:15", "dest":"   奈良   " },
-      { "time":"16:21", "dest":"  東花園  " },
+      { "time":"16:01", "dest":"  東花園  " },
+      { "time":"16:15", "dest":"   奈良   " },
+      { "time":"16:21", "dest":"  東花園  " },
       { "time":"16:35", "dest":"大和西大寺" },
-      { "time":"16:41", "dest":"  東花園  " },
-      { "time":"16:57", "dest":"   石切   " },
-      { "time":"17:06", "dest":"  東生駒  " },
-      { "time":"17:10", "dest":"  東花園  " },
+      { "time":"16:41", "dest":"  東花園  " },
+      { "time":"16:57", "dest":"   石切   " },
+      { "time":"17:06", "dest":"  東生駒  " },
+      { "time":"17:10", "dest":"  東花園  " },
       { "time":"17:22", "dest":"大和西大寺" },
-      { "time":"17:32", "dest":"  東生駒  " },
-      { "time":"17:42", "dest":"   奈良   " },
-      { "time":"17:52", "dest":"  東生駒  " },
-      { "time":"18:02", "dest":"   奈良   " },
-      { "time":"18:11", "dest":"  東生駒  " },
-      { "time":"18:22", "dest":"   奈良   " },
-      { "time":"18:32", "dest":"  東生駒  " },
+      { "time":"17:32", "dest":"  東生駒  " },
+      { "time":"17:42", "dest":"   奈良   " },
+      { "time":"17:52", "dest":"  東生駒  " },
+      { "time":"18:02", "dest":"   奈良   " },
+      { "time":"18:11", "dest":"  東生駒  " },
+      { "time":"18:22", "dest":"   奈良   " },
+      { "time":"18:32", "dest":"  東生駒  " },
       { "time":"18:42", "dest":"大和西大寺" },
-      { "time":"18:52", "dest":"  東生駒  " },
+      { "time":"18:52", "dest":"  東生駒  " },
       { "time":"19:03", "dest":"大和西大寺" },
-      { "time":"19:11", "dest":"  東生駒  " },
-      { "time":"19:22", "dest":"   奈良   " },
-      { "time":"19:32", "dest":"  東生駒  " },
-      { "time":"19:42", "dest":"   奈良   " },
-      { "time":"19:52", "dest":"  東生駒  " },
+      { "time":"19:11", "dest":"  東生駒  " },
+      { "time":"19:22", "dest":"   奈良   " },
+      { "time":"19:32", "dest":"  東生駒  " },
+      { "time":"19:42", "dest":"   奈良   " },
+      { "time":"19:52", "dest":"  東生駒  " },
       { "time":"20:02", "dest":"大和西大寺" },
       { "time":"20:10", "dest":"大和西大寺" },
-      { "time":"20:22", "dest":"   奈良   " },
+      { "time":"20:22", "dest":"   奈良   " },
       { "time":"20:31", "dest":"　東花園　" },
       { "time":"20:45", "dest":"大和西大寺" },
       { "time":"21:00", "dest":"　東花園　" },
       { "time":"21:14", "dest":"大和西大寺" },
       { "time":"21:21", "dest":"　東花園　" },
       { "time":"21:35", "dest":"　東花園　" },
-      { "time":"21:51", "dest":"   奈良   " },
+      { "time":"21:51", "dest":"   奈良   " },
       { "time":"22:04", "dest":"　東花園　" },
       { "time":"22:15", "dest":"　東花園　" },
-      { "time":"22:29", "dest":"   奈良   " },
+      { "time":"22:29", "dest":"   奈良   " },
       { "time":"22:42", "dest":"大和西大寺" },
       { "time":"23:00", "dest":"　東花園　" },
       { "time":"23:16", "dest":"　東花園　" },
@@ -708,108 +725,107 @@
       { "time":"00:21", "dest":"　東花園　" }
  ];
     const holidayHachinoDown = [ { "time":"05:29", "dest":"大和西大寺" },
-      { "time":"05:49", "dest":"   奈良   " },
+      { "time":"05:49", "dest":"   奈良   " },
       { "time":"06:04", "dest":"大和西大寺" },
-      { "time":"06:24", "dest":"  東花園  " },
-      { "time":"06:38", "dest":"  東花園  " },
-      { "time":"06:53", "dest":"  東花園  " },
-      { "time":"07:07", "dest":"  東花園  " },
+      { "time":"06:24", "dest":"  東花園  " },
+      { "time":"06:38", "dest":"  東花園  " },
+      { "time":"06:53", "dest":"  東花園  " },
+      { "time":"07:07", "dest":"  東花園  " },
       { "time":"07:24", "dest":"大和西大寺" },
-      { "time":"07:32", "dest":"  東花園  " },
-      { "time":"07:44", "dest":"   奈良   " },
-      { "time":"07:57", "dest":"  東花園  " },
+      { "time":"07:32", "dest":"  東花園  " },
+      { "time":"07:44", "dest":"   奈良   " },
+      { "time":"07:57", "dest":"  東花園  " },
       { "time":"08:12", "dest":"大和西大寺" },
-      { "time":"08:24", "dest":"  東花園  " },
-      { "time":"08:29", "dest":"  東花園  " },
-      { "time":"08:39", "dest":"  東花園  " },
+      { "time":"08:24", "dest":"  東花園  " },
+      { "time":"08:29", "dest":"  東花園  " },
+      { "time":"08:39", "dest":"  東花園  " },
       { "time":"08:47", "dest":"大和西大寺" },
       { "time":"08:58", "dest":"大和西大寺" },
-      { "time":"09:09", "dest":"  東花園  " },
-      { "time":"09:20", "dest":"  東花園  " },
+      { "time":"09:09", "dest":"  東花園  " },
+      { "time":"09:20", "dest":"  東花園  " },
       { "time":"09:31", "dest":"大和西大寺" },
-      { "time":"09:40", "dest":"  東花園  " },
-      { "time":"09:54", "dest":"   奈良   " },
-      { "time":"10:01", "dest":"  東花園  " },
+      { "time":"09:40", "dest":"  東花園  " },
+      { "time":"09:54", "dest":"   奈良   " },
+      { "time":"10:01", "dest":"  東花園  " },
       { "time":"10:15", "dest":"大和西大寺" },
-      { "time":"10:21", "dest":"  東花園  " },
-      { "time":"10:35", "dest":"   奈良   " },
-      { "time":"10:41", "dest":"  東花園  " },
+      { "time":"10:21", "dest":"  東花園  " },
+      { "time":"10:35", "dest":"   奈良   " },
+      { "time":"10:41", "dest":"  東花園  " },
       { "time":"10:55", "dest":"大和西大寺" },
-      { "time":"11:01", "dest":"  東花園  " },
-      { "time":"11:15", "dest":"   奈良   " },
-      { "time":"11:21", "dest":"  東花園  " },
+      { "time":"11:01", "dest":"  東花園  " },
+      { "time":"11:15", "dest":"   奈良   " },
+      { "time":"11:21", "dest":"  東花園  " },
       { "time":"11:35", "dest":"大和西大寺" },
-      { "time":"11:41", "dest":"  東花園  " },
+      { "time":"11:41", "dest":"  東花園  " },
       { "time":"11:55", "dest":"大和西大寺" },
-      { "time":"12:01", "dest":"  東花園  " },
-      { "time":"12:15", "dest":"   奈良   " },
-      { "time":"12:21", "dest":"  東花園  " },
+      { "time":"12:01", "dest":"  東花園  " },
+      { "time":"12:15", "dest":"   奈良   " },
+      { "time":"12:21", "dest":"  東花園  " },
       { "time":"12:35", "dest":"大和西大寺" },
-      { "time":"12:41", "dest":"  東花園  " },
-      { "time":"12:55", "dest":"   奈良   " },
-      { "time":"13:01", "dest":"  東花園  " },
+      { "time":"12:41", "dest":"  東花園  " },
+      { "time":"12:55", "dest":"   奈良   " },
+      { "time":"13:01", "dest":"  東花園  " },
       { "time":"13:15", "dest":"大和西大寺" },
-      { "time":"13:21", "dest":"  東花園  " },
+      { "time":"13:21", "dest":"  東花園  " },
       { "time":"13:35", "dest":"大和西大寺" },
-      { "time":"13:41", "dest":"  東花園  " },
+      { "time":"13:41", "dest":"  東花園  " },
       { "time":"13:55", "dest":"大和西大寺" },
-      { "time":"14:01", "dest":"  東花園  " },
+      { "time":"14:01", "dest":"  東花園  " },
       { "time":"14:15", "dest":"大和西大寺" },
-      { "time":"14:21", "dest":"  東花園  " },
+      { "time":"14:21", "dest":"  東花園  " },
       { "time":"14:35", "dest":"大和西大寺" },
-      { "time":"14:41", "dest":"  東花園  " },
+      { "time":"14:41", "dest":"  東花園  " },
       { "time":"14:55", "dest":"大和西大寺" },
-      { "time":"15:01", "dest":"  東花園  " },
+      { "time":"15:01", "dest":"  東花園  " },
       { "time":"15:15", "dest":"大和西大寺" },
-      { "time":"15:21", "dest":"  東花園  " },
-      { "time":"15:35", "dest":"   奈良   " },
-      { "time":"15:41", "dest":"  東花園  " },
+      { "time":"15:21", "dest":"  東花園  " },
+      { "time":"15:35", "dest":"   奈良   " },
+      { "time":"15:41", "dest":"  東花園  " },
       { "time":"15:55", "dest":"大和西大寺" },
-      { "time":"16:01", "dest":"  東花園  " },
-      { "time":"16:15", "dest":"   奈良   " },
-      { "time":"16:21", "dest":"  東花園  " },
-      { "time":"16:35", "dest":"   奈良   " },
-      { "time":"16:41", "dest":"  東花園  " },
+      { "time":"16:01", "dest":"  東花園  " },
+      { "time":"16:15", "dest":"   奈良   " },
+      { "time":"16:21", "dest":"  東花園  " },
+      { "time":"16:35", "dest":"   奈良   " },
+      { "time":"16:41", "dest":"  東花園  " },
       { "time":"16:55", "dest":"大和西大寺" },
-      { "time":"17:01", "dest":"  東花園  " },
-      { "time":"17:15", "dest":"   奈良   " },
-      { "time":"17:21", "dest":"  東花園  " },
-      { "time":"17:35", "dest":"   奈良   " },
-      { "time":"17:41", "dest":"  東花園  " },
+      { "time":"17:01", "dest":"  東花園  " },
+      { "time":"17:15", "dest":"   奈良   " },
+      { "time":"17:21", "dest":"  東花園  " },
+      { "time":"17:35", "dest":"   奈良   " },
+      { "time":"17:41", "dest":"  東花園  " },
       { "time":"17:55", "dest":"大和西大寺" },
-      { "time":"18:01", "dest":"  東花園  " },
+      { "time":"18:01", "dest":"  東花園  " },
       { "time":"18:15", "dest":"大和西大寺" },
-      { "time":"18:21", "dest":"  東花園  " },
-      { "time":"18:35", "dest":"   奈良   " },
-      { "time":"18:41", "dest":"  東花園  " },
+      { "time":"18:21", "dest":"  東花園  " },
+      { "time":"18:35", "dest":"   奈良   " },
+      { "time":"18:41", "dest":"  東花園  " },
       { "time":"18:55", "dest":"大和西大寺" },
-      { "time":"19:01", "dest":"  東花園  " },
-      { "time":"19:15", "dest":"   奈良   " },
-      { "time":"19:21", "dest":"  東花園  " },
-      { "time":"19:35", "dest":"  東花園  " },
-      { "time":"19:41", "dest":"   奈良   " },
-      { "time":"19:51", "dest":"  東花園  " },
-      { "time":"20:03", "dest":"   奈良   " },
-      { "time":"20:19", "dest":"  東花園  " },
-      { "time":"20:35", "dest":"  東花園  " },
+      { "time":"19:01", "dest":"  東花園  " },
+      { "time":"19:15", "dest":"   奈良   " },
+      { "time":"19:21", "dest":"  東花園  " },
+      { "time":"19:35", "dest":"  東花園  " },
+      { "time":"19:41", "dest":"   奈良   " },
+      { "time":"19:51", "dest":"  東花園  " },
+      { "time":"20:03", "dest":"   奈良   " },
+      { "time":"20:19", "dest":"  東花園  " },
+      { "time":"20:35", "dest":"  東花園  " },
       { "time":"20:41", "dest":"大和西大寺" },
-      { "time":"20:49", "dest":"  東花園  " },
-      { "time":"21:03", "dest":"  東生駒  " },
+      { "time":"20:49", "dest":"  東花園  " },
+      { "time":"21:03", "dest":"  東生駒  " },
       { "time":"21:17", "dest":"大和西大寺" },
-      { "time":"21:29", "dest":"  東花園  " },
-      { "time":"21:46", "dest":"  東花園  " },
-      { "time":"21:58", "dest":"   奈良   " },
-      { "time":"22:14", "dest":"  東花園  " },
-      { "time":"22:28", "dest":"  東花園  " },
-      { "time":"22:41", "dest":"  東花園  " },
-      { "time":"22:55", "dest":"  東花園  " },
-      { "time":"23:11", "dest":"   奈良   " },
-      { "time":"23:28", "dest":"   奈良   " },
+      { "time":"21:29", "dest":"  東花園  " },
+      { "time":"21:46", "dest":"  東花園  " },
+      { "time":"21:58", "dest":"   奈良   " },
+      { "time":"22:14", "dest":"  東花園  " },
+      { "time":"22:28", "dest":"  東花園  " },
+      { "time":"22:41", "dest":"  東花園  " },
+      { "time":"22:55", "dest":"  東花園  " },
+      { "time":"23:11", "dest":"   奈良   " },
+      { "time":"23:28", "dest":"   奈良   " },
       { "time":"23:44", "dest":"大和西大寺" },
-      { "time":"00:05", "dest":"  東花園  " },
-      { "time":"00:21", "dest":"  東花園  " }
+      { "time":"00:05", "dest":"  東花園  " },
+      { "time":"00:21", "dest":"  東花園  " }
  ];
-    // ==== ここまで時刻表データ ====
 
     // --- 以下、ロジック ---
     function pad(n){ return n.toString().padStart(2,"0"); }
@@ -985,7 +1001,6 @@
       try {
         const ta = document.createElement('textarea');
         ta.value = text;
-        // 画面外に設置して選択・コピー
         ta.style.position = 'fixed';
         ta.style.left = '-9999px';
         document.body.appendChild(ta);
@@ -1001,14 +1016,90 @@
             alert('URLをコピーしました: ' + text);
           }
         } else {
-          // 最終手段でユーザーに提示
           prompt('このURLをコピーしてください（Ctrl+C / Cmd+C）:', text);
         }
       } catch (e) {
-        // 失敗したら prompt で表示
         prompt('このURLをコピーしてください（Ctrl+C / Cmd+C）:', text);
       }
     }
+  </script>
+
+  <!-- ★ 桜エフェクト用JavaScript -->
+  <script>
+    let sakuraEnabled = false;
+    let petals = [];
+    let canvas = document.getElementById("sakura");
+    let ctx = canvas.getContext("2d");
+
+    // Canvas初期化
+    function initSakura() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      petals = [];
+      
+      for(let i = 0; i < 50; i++) {
+        petals.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 4 + 2,
+          d: Math.random() * 1 + 0.5,
+          vx: (Math.random() - 0.5) * 0.5
+        });
+      }
+    }
+
+    function drawSakura() {
+      if (!sakuraEnabled) return;
+      
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "rgba(255, 192, 203, 0.8)";
+      ctx.strokeStyle = "rgba(255, 105, 180, 0.6)";
+      ctx.lineWidth = 1;
+
+      petals.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
+        ctx.fill();
+        ctx.stroke();
+      });
+
+      updateSakura();
+    }
+
+    function updateSakura() {
+      petals.forEach(p => {
+        p.y += p.d;
+        p.x += Math.sin(p.y * 0.01) * 0.5 + p.vx;
+        
+        // 画面外に出たら再生成
+        if(p.y > canvas.height) {
+          p.y = -p.r;
+          p.x = Math.random() * canvas.width;
+        }
+        if(p.x < -p.r) p.x = canvas.width + p.r;
+        if(p.x > canvas.width + p.r) p.x = -p.r;
+      });
+    }
+
+    function toggleSakura() {
+      sakuraEnabled = !sakuraEnabled;
+      if (sakuraEnabled) {
+        initSakura();
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    // ウィンドウリサイズ時にCanvasもリサイズ
+    window.addEventListener('resize', () => {
+      if (sakuraEnabled) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+    });
+
+    // アニメーションループ
+    setInterval(drawSakura, 30);
   </script>
 </body>
 </html>
